@@ -27,6 +27,10 @@ class ErShouSpider(BaseSpider):
         :param fmt: 保存文件格式
         :return: None
         """
+        # 如果指定区域，则忽略其他区域
+        if len(sys.argv) > 2 and area_name != sys.argv[2]:
+            return
+
         district_name = area_dict.get(area_name, "")
         csv_file = self.today_path + "/{0}_{1}.csv".format(district_name, area_name)
         with open(csv_file, "w") as f:
@@ -89,6 +93,7 @@ class ErShouSpider(BaseSpider):
             house_elements = soup.find_all('li', class_="clear")
             for house_elem in house_elements:
                 price = house_elem.find('div', class_="totalPrice")
+                url = house_elem.find('a', class_="img VIEWDATA CLICKDATA maidian-detail")
                 name = house_elem.find('div', class_='title')
                 desc = house_elem.find('div', class_="houseInfo")
                 pic = house_elem.find('a', class_="img").find('img', class_="lj-lazy")
@@ -98,11 +103,12 @@ class ErShouSpider(BaseSpider):
                 name = name.text.replace("\n", "")
                 desc = desc.text.replace("\n", "").strip()
                 pic = pic.get('data-original').strip()
+                url = url.get('href').strip()
                 # print(pic)
 
 
                 # 作为对象保存
-                ershou = ErShou(chinese_district, chinese_area, name, price, desc, pic)
+                ershou = ErShou(chinese_district, chinese_area, name, price, desc, pic, url)
                 ershou_list.append(ershou)
         return ershou_list
 

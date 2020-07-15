@@ -79,7 +79,7 @@ def get_city():
             city = raw_input(prompt)
         else:
             city = input(prompt)
-    elif len(sys.argv) == 2:
+    elif len(sys.argv) >= 2:
         city = str(sys.argv[1])
         print("City is: {0}".format(city))
     else:
