@@ -93,22 +93,28 @@ class ErShouSpider(BaseSpider):
             house_elements = soup.find_all('li', class_="clear")
             for house_elem in house_elements:
                 price = house_elem.find('div', class_="totalPrice")
+                unit_price = house_elem.find('div', class_="unitPrice")
                 url = house_elem.find('a', class_="img VIEWDATA CLICKDATA maidian-detail")
                 name = house_elem.find('div', class_='title')
                 desc = house_elem.find('div', class_="houseInfo")
                 pic = house_elem.find('a', class_="img").find('img', class_="lj-lazy")
+                xiaoqu = house_elem.find('div', class_="positionInfo").find('a')
 
                 # 继续清理数据
                 price = price.text.strip()
+                hid = unit_price.get('data-hid').strip()
+                unit_price = unit_price.get('data-price').strip()
                 name = name.text.replace("\n", "")
                 desc = re.sub('\s+', ' ', desc.text.replace("\n", "")).strip()
                 pic = pic.get('data-original').strip()
                 url = url.get('href').strip()
+                xiaoqu_url = xiaoqu.get('href').strip()
+                xiaoqu_name = xiaoqu.text.strip()
                 # print(pic)
 
 
                 # 作为对象保存
-                ershou = ErShou(chinese_district, chinese_area, name, price, desc, pic, url)
+                ershou = ErShou(chinese_district, chinese_area, name, price, desc, pic, url, xiaoqu_url, xiaoqu_name, hid, unit_price)
                 ershou_list.append(ershou)
         return ershou_list
 
