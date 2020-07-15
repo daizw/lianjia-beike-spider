@@ -101,7 +101,7 @@ class ErShouSpider(BaseSpider):
                 # 继续清理数据
                 price = price.text.strip()
                 name = name.text.replace("\n", "")
-                desc = desc.text.replace("\n", "").strip()
+                desc = re.sub('\s+', ' ', desc.text.replace("\n", "")).strip()
                 pic = pic.get('data-original').strip()
                 url = url.get('href').strip()
                 # print(pic)

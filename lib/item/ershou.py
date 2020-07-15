@@ -16,12 +16,13 @@ class ErShou(object):
         self.url = url
 
     def text(self):
-        return ','.join([self.district,
+        return ','.join([self.url,
+                self.district,
                 self.area,
                 self.name,
                 self.price,
                 self.desc,
-                self.pic,
-                self.url])
+                '"""'+self.pic+'"""',
+                ])
 
 
